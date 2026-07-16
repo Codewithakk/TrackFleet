@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { shipmentService } from '../services/api';
-import { 
-  Box, 
-  Grid, 
-  Card, 
-  CardContent, 
-  Typography, 
-  CircularProgress, 
-  Alert, 
-  Paper, 
+import {
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Alert,
+  Paper,
   Button,
   Pagination,
   Stack
@@ -35,7 +35,7 @@ const ShipmentList = () => {
       setError(null);
       const response = await shipmentService.getAllShipments();
       console.log('API response:', response); // Debug log
-      
+
       // Handle different response formats
       let allShipments = [];
       if (Array.isArray(response)) {
@@ -50,7 +50,7 @@ const ShipmentList = () => {
         console.error('Unexpected API response format:', response);
         allShipments = [];
       }
-      
+
       setShipments(allShipments);
       setTotalPages(Math.ceil(allShipments.length / ITEMS_PER_PAGE));
       setPage(1); // Reset to first page when new data is loaded
@@ -94,14 +94,14 @@ const ShipmentList = () => {
   };
 
   if (loading) return <Box display="flex" justifyContent="center" my={4}><CircularProgress /></Box>;
-  
+
   if (error) {
     return (
       <Box my={4}>
         <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
-        <Button 
-          variant="outlined" 
-          color="primary" 
+        <Button
+          variant="outlined"
+          color="primary"
           onClick={() => fetchShipments()}
         >
           Try Again
@@ -118,16 +118,16 @@ const ShipmentList = () => {
           Would you like to add sample shipments to the database?
         </Typography>
         <Box display="flex" justifyContent="center" gap={2} mt={3}>
-          <Button 
-            variant="contained" 
-            color="primary" 
+          <Button
+            variant="contained"
+            color="primary"
             onClick={handleSeedData}
             disabled={seedLoading}
           >
             {seedLoading ? <CircularProgress size={24} /> : 'Add Sample Shipments'}
           </Button>
-          <Button 
-            variant="outlined" 
+          <Button
+            variant="outlined"
             startIcon={<AddIcon />}
             onClick={() => navigate('/create')}
           >
@@ -149,9 +149,9 @@ const ShipmentList = () => {
     <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5">All Shipments</Typography>
-        <Button 
-          variant="contained" 
-          color="primary" 
+        <Button
+          variant="contained"
+          color="primary"
           startIcon={<AddIcon />}
           onClick={() => navigate('/create')}
         >
@@ -170,9 +170,9 @@ const ShipmentList = () => {
           <Grid container spacing={2}>
             {currentShipments.map((shipment) => (
               <Grid item xs={12} sm={6} key={shipment.trackingNumber || shipment._id}>
-                <Card 
-                  variant="outlined" 
-                  sx={{ 
+                <Card
+                  variant="outlined"
+                  sx={{
                     height: '100%',
                     transition: 'transform 0.2s, box-shadow 0.2s',
                     '&:hover': {
@@ -203,16 +203,16 @@ const ShipmentList = () => {
               </Grid>
             ))}
           </Grid>
-          
+
           {/* Pagination */}
           {shipments.length > ITEMS_PER_PAGE && (
             <Stack spacing={2} sx={{ mt: 4, display: 'flex', alignItems: 'center' }}>
-              <Pagination 
-                count={totalPages} 
-                page={page} 
-                onChange={handlePageChange} 
-                color="primary" 
-                showFirstButton 
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={handlePageChange}
+                color="primary"
+                showFirstButton
                 showLastButton
               />
               <Typography variant="body2" color="textSecondary">

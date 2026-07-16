@@ -103,18 +103,18 @@ const HomePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate tracking number
     if (!trackingNumber || trackingNumber.trim() === '') {
       setTrackingError('Please enter a valid tracking number');
       return;
     }
-    
+
     try {
       setIsSubmitting(true);
       setTrackingError(null);
       clearShipment(); // Clear any previous shipment data
-      
+
       // Navigate to tracking page with the tracking number
       navigate(`/tracking/${trackingNumber.trim()}`);
     } catch (err) {
@@ -153,84 +153,84 @@ const HomePage = () => {
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
           <Fade in={true} timeout={1000}>
             <Box>
-          <DeliveryDiningIcon sx={{ 
-            fontSize: 60, 
-            mb: 2,
-            color: theme.palette.primary.main,
-            filter: `drop-shadow(0 0 8px ${theme.palette.primary.main})`,
-          }} />
+              <DeliveryDiningIcon sx={{
+                fontSize: 60,
+                mb: 2,
+                color: theme.palette.primary.main,
+                filter: `drop-shadow(0 0 8px ${theme.palette.primary.main})`,
+              }} />
               <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
-                  Track Your <Box component="span" sx={{ color: theme.palette.primary.main }}>Shipment</Box>
+                Track Your <Box component="span" sx={{ color: theme.palette.primary.main }}>Shipment</Box>
               </Typography>
               <Typography variant="h6" component="p" paragraph sx={{ maxWidth: '700px', mx: 'auto', mb: 4 }}>
-            Enter your tracking number to get real-time updates on your shipment's status and location.
-          </Typography>
-          
-          <Paper 
-            component="form" 
+                Enter your tracking number to get real-time updates on your shipment's status and location.
+              </Typography>
+
+              <Paper
+                component="form"
                 onSubmit={handleSubmit}
-            sx={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
-              gap: 1,
+                sx={{
+                  display: 'flex',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  gap: 1,
                   p: 1.5,
                   maxWidth: 600,
-              mx: 'auto',
+                  mx: 'auto',
                   mt: 3,
                   background: 'rgba(30, 41, 59, 0.8)',
                   backdropFilter: 'blur(10px)',
                   border: `1px solid ${theme.palette.primary.dark}40`,
                   boxShadow: `0 0 20px ${theme.palette.primary.main}30`,
-            }}
+                }}
                 elevation={4}
-          >
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Enter tracking number"
+              >
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  placeholder="Enter tracking number"
                   value={trackingNumber}
                   onChange={(e) => setTrackingNumber(e.target.value)}
-              InputProps={{
-                sx: { 
-                  bgcolor: 'background.paper',
-                  '& fieldset': { border: 'none' },
-                  borderRadius: 1,
-                  '&:focus-within': {
-                    boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
-                  },
-                }
-              }}
-              required
+                  InputProps={{
+                    sx: {
+                      bgcolor: 'background.paper',
+                      '& fieldset': { border: 'none' },
+                      borderRadius: 1,
+                      '&:focus-within': {
+                        boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
+                      },
+                    }
+                  }}
+                  required
                   disabled={isSubmitting}
                   error={!!trackingError}
                   helperText={trackingError}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  size="large"
                   disabled={isSubmitting}
-              sx={{
-                minWidth: 160,
-                height: 56,
-                whiteSpace: 'nowrap',
-                fontWeight: 'bold',
-                boxShadow: theme.shadows[4],
-                '&:hover': {
-                  boxShadow: theme.shadows[8],
-                },
-              }}
-            >
+                  sx={{
+                    minWidth: 160,
+                    height: 56,
+                    whiteSpace: 'nowrap',
+                    fontWeight: 'bold',
+                    boxShadow: theme.shadows[4],
+                    '&:hover': {
+                      boxShadow: theme.shadows[8],
+                    },
+                  }}
+                >
                   {isSubmitting ? <CircularProgress size={24} /> : 'Track Shipment'}
-            </Button>
-          </Paper>
-          
-          {error && (
-            <Alert severity="error" sx={{ mt: 2, maxWidth: 700, mx: 'auto' }}>
-              {error}
-            </Alert>
-          )}
+                </Button>
+              </Paper>
+
+              {error && (
+                <Alert severity="error" sx={{ mt: 2, maxWidth: 700, mx: 'auto' }}>
+                  {error}
+                </Alert>
+              )}
             </Box>
           </Fade>
         </Container>
@@ -244,7 +244,7 @@ const HomePage = () => {
           </Typography>
           <Divider sx={{ width: '80px', mx: 'auto', mb: 4, borderColor: theme.palette.primary.main, borderWidth: 2 }} />
         </Box>
-        
+
         <Grid container spacing={4} sx={{ mb: 8 }}>
           {features.map((feature, index) => (
             <Grid item xs={12} md={4} key={index}>
@@ -275,9 +275,9 @@ const HomePage = () => {
       </Container>
 
       {/* Call to Action */}
-      <Box 
-        sx={{ 
-          py: 8, 
+      <Box
+        sx={{
+          py: 8,
           background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/images/cta-bg.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -288,21 +288,21 @@ const HomePage = () => {
         <Container maxWidth="md">
           <Stack spacing={4} alignItems="center" textAlign="center">
             <Typography variant="h4" component="h2" color="common.white" fontWeight="bold">
-          Need to ship something?
-        </Typography>
+              Need to ship something?
+            </Typography>
             <Typography variant="body1" color="common.white" sx={{ maxWidth: '600px' }}>
-          Create a new shipment and track it in real-time with our advanced tracking system.
+              Create a new shipment and track it in real-time with our advanced tracking system.
               Our reliable delivery network ensures your package arrives safely and on time.
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={() => navigate('/create')}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={() => navigate('/create')}
               sx={{ mt: 2, px: 4, py: 1.5 }}
-        >
-          Create New Shipment
-        </Button>
+            >
+              Create New Shipment
+            </Button>
           </Stack>
         </Container>
       </Box>
@@ -310,7 +310,7 @@ const HomePage = () => {
       {/* Shipment List Section */}
       <Container maxWidth="lg">
         <ShipmentList />
-    </Container>
+      </Container>
     </Box>
   );
 };
