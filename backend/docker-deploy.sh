@@ -6,7 +6,7 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-echo "Deploying Shipment Tracker API with Docker..."
+echo "Deploying Track Fleet  API with Docker..."
 
 # Check if .env file exists
 if [ ! -f .env ]; then
@@ -20,7 +20,7 @@ docker-compose up -d --build
 
 # Check if containers are running
 if [ $? -eq 0 ]; then
-  echo -e "${GREEN}✅ Shipment Tracker API is now running!${NC}"
+  echo -e "${GREEN}✅ Track Fleet  API is now running!${NC}"
   echo -e "${GREEN}📊 API is available at: http://localhost:5000${NC}"
   echo -e "${YELLOW}📝 To view logs: docker-compose logs -f${NC}"
   echo -e "${YELLOW}🛑 To stop: docker-compose down${NC}"

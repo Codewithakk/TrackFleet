@@ -1,6 +1,6 @@
 {
-  "short_name": "Shipment Tracker",
-  "name": "Shipment Tracker - Track Your Packages in Real-Time",
+  "short_name": "Track Fleet",
+  "name": "Track Fleet - Track Your Packages in Real-Time",
   "icons": [
     {
       "src": "favicons/favicon-16x16.png",
@@ -34,5 +34,9 @@
   "background_color": "#ffffff",
   "description": "Advanced shipment tracking system with real-time updates",
   "orientation": "portrait-primary",
-  "categories": ["business", "logistics", "tracking"]
+  "categories": [
+    "business",
+    "logistics",
+    "tracking"
+  ]
 }

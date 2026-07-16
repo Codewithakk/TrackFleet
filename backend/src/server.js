@@ -37,9 +37,9 @@ app.use((req, res, next) => {
       })
       .catch(err => {
         logger.error('Failed to reconnect to MongoDB:', err);
-        res.status(500).json({ 
-          success: false, 
-          error: 'Database connection error. Please try again later.' 
+        res.status(500).json({
+          success: false,
+          error: 'Database connection error. Please try again later.'
         });
       });
   } else {
@@ -60,7 +60,7 @@ app.use('/shipments', (req, res) => {
 // Health check endpoint
 app.get('/health', (req, res) => {
   const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
-  res.status(200).json({ 
+  res.status(200).json({
     status: 'ok',
     database: dbStatus
   });
@@ -68,8 +68,8 @@ app.get('/health', (req, res) => {
 
 // Root route
 app.get('/', (req, res) => {
-  res.status(200).json({ 
-    message: 'Shipment Tracker API is running',
+  res.status(200).json({
+    message: 'Track Fleet API is running',
     endpoints: {
       health: '/health',
       api: '/api/shipments'
@@ -90,12 +90,12 @@ const startServer = async () => {
   try {
     // Connect to MongoDB
     await connectDB();
-    
+
     // Start Express server
     const server = app.listen(port, () => {
       logger.info(`Server running on port ${port}`);
     });
-    
+
     // Handle server shutdown
     const gracefulShutdown = async () => {
       logger.info('Shutting down server...');
@@ -111,11 +111,11 @@ const startServer = async () => {
         }
       });
     };
-    
+
     // Handle process termination
     process.on('SIGTERM', gracefulShutdown);
     process.on('SIGINT', gracefulShutdown);
-    
+
   } catch (error) {
     logger.error('Failed to start server:', error);
     process.exit(1);

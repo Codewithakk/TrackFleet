@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Deploying Shipment Tracker Web Application with Docker..."
+echo "Deploying Track Fleet Web Application with Docker..."
 
 # Check if .env file exists
 if [ ! -f .env ]; then
@@ -12,5 +12,5 @@ fi
 # Build and start containers
 docker-compose up -d --build
 
-echo "Shipment Tracker Web Application is now running."
+echo "Track Fleet  Web Application is now running."
 echo "Visit http://localhost to access the application." 

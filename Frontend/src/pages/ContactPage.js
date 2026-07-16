@@ -13,13 +13,27 @@ import {
   Alert,
   IconButton,
   CardMedia,
-  useTheme
+  useTheme,
+  useMediaQuery,
+  Chip,
+  Stack,
+  Fade,
+  Slide,
+  Zoom,
+  alpha,
+  Avatar,
+  Card,
+  CardContent,
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import SendIcon from '@mui/icons-material/Send';
 import BusinessIcon from '@mui/icons-material/Business';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { styled } from '@mui/material/styles';
 
 const contactReasons = [
   'General Inquiry',
@@ -30,8 +44,35 @@ const contactReasons = [
   'Other'
 ];
 
+// Styled Components
+const HeroSection = styled(Box)(({ theme }) => ({
+  background: `linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)`,
+  borderRadius: '20px',
+  padding: theme.spacing(5, 4),
+  marginBottom: theme.spacing(4),
+  position: 'relative',
+  overflow: 'hidden',
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(3, 2),
+  },
+}));
+
+const InfoCard = styled(Card)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderRadius: '16px',
+  transition: 'all 0.3s ease',
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
+  '&:hover': {
+    transform: 'translateY(-4px)',
+    boxShadow: '0 12px 40px rgba(0,0,0,0.06)',
+    borderColor: theme.palette.primary.main,
+  },
+}));
+
 const ContactPage = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -39,7 +80,7 @@ const ContactPage = () => {
     reason: '',
     message: ''
   });
-  
+
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [snackbar, setSnackbar] = useState({
@@ -54,8 +95,7 @@ const ContactPage = () => {
       ...prev,
       [name]: value
     }));
-    
-    // Clear error when field is edited
+
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -66,50 +106,48 @@ const ContactPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     if (!formData.reason) {
       newErrors.reason = 'Please select a reason for contact';
     }
-    
+
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required';
     } else if (formData.message.length < 10) {
       newErrors.message = 'Message is too short (minimum 10 characters)';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsSubmitting(true);
-    
-    // Simulate API call
+
     setTimeout(() => {
       setIsSubmitting(false);
       setSnackbar({
         open: true,
-        message: 'Your message has been sent successfully! We will get back to you soon.',
+        message: '✅ Your message has been sent successfully! We will get back to you soon.',
         severity: 'success'
       });
-      
-      // Reset form
+
       setFormData({
         name: '',
         email: '',
@@ -127,280 +165,381 @@ const ContactPage = () => {
     }));
   };
 
-  return (
-    <Box
-      sx={{
-        minHeight: 'calc(100vh - 64px)',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: 0,
-        padding: 0,
-        position: 'relative',
-        bgcolor: theme.palette.background.default
-      }}
-    >
-      {/* Hero section with background image */}
-      <Box
-        sx={{
-          height: '300px',
-          width: '100%',
-          backgroundImage: 'url("/images/contact-background.jpg")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          position: 'relative',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-          }
-        }}
-      >
-        <Container maxWidth="lg" sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <Box sx={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
-            <Typography variant="h2" component="h1" gutterBottom sx={{ color: 'white', fontWeight: 'bold' }}>
-              Contact Us
-            </Typography>
-            <Typography variant="h6" sx={{ color: 'rgba(255, 255, 255, 0.9)', maxWidth: 800, mx: 'auto' }}>
-              Have questions or need assistance? Our team is here to help you.
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
+  const contactInfo = [
+    {
+      icon: <EmailIcon />,
+      title: 'Email Us',
+      detail: 'support@trackfleet.com',
+      subtitle: 'We reply within 24 hours',
+    },
+    {
+      icon: <PhoneIcon />,
+      title: 'Call Us',
+      detail: '+91 9658741230',
+      subtitle: 'Mon-Fri, 9AM - 6PM EST',
+    },
+    {
+      icon: <SupportAgentIcon />,
+      title: 'Live Chat',
+      detail: '24/7 Support Available',
+      subtitle: 'Instant assistance',
+    },
+    {
+      icon: <BusinessIcon />,
+      title: 'Visit Us',
+      detail: '123 Abcd, DG, CD 965874',
+      subtitle: 'Book an appointment',
+    },
+  ];
 
-      {/* Main content */}
-      <Container maxWidth="lg" sx={{ mt: -5, mb: 8, position: 'relative', zIndex: 3 }}>
-        <Grid container spacing={4}>
-          {/* Contact form */}
-          <Grid item xs={12} md={8}>
-            <Paper elevation={4} sx={{ 
-              p: 4, 
-              borderRadius: 2,
-              backgroundColor: theme.palette.background.paper,
-              height: '100%'
-            }}>
-              <Typography variant="h5" component="h2" gutterBottom color="primary">
-                Send Us a Message
-              </Typography>
-              <Typography variant="body1" paragraph color="text.secondary">
-                Please fill out the form below and we'll get back to you as soon as possible.
-              </Typography>
-              
-              <Divider sx={{ my: 3 }} />
-              
-              <form onSubmit={handleSubmit}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Your Name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      error={!!errors.name}
-                      helperText={errors.name}
-                      required
-                      variant="outlined"
-                    />
-                  </Grid>
-                  
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Email Address"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      error={!!errors.email}
-                      helperText={errors.email}
-                      required
-                      variant="outlined"
-                    />
-                  </Grid>
-                  
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Phone Number (Optional)"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      select
-                      fullWidth
-                      label="Reason for Contact"
-                      name="reason"
-                      value={formData.reason}
-                      onChange={handleChange}
-                      error={!!errors.reason}
-                      helperText={errors.reason}
-                      required
-                      variant="outlined"
-                    >
-                      {contactReasons.map((reason) => (
-                        <MenuItem key={reason} value={reason}>
-                          {reason}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={5}
-                      label="Your Message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      error={!!errors.message}
-                      helperText={errors.message}
-                      required
-                      variant="outlined"
-                    />
-                  </Grid>
-                  
-                  <Grid item xs={12}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      disabled={isSubmitting}
-                      endIcon={<SendIcon />}
-                      sx={{ px: 4, py: 1.2, borderRadius: 2 }}
-                    >
-                      {isSubmitting ? 'Sending...' : 'Send Message'}
-                    </Button>
-                  </Grid>
-                </Grid>
-              </form>
-            </Paper>
-          </Grid>
-          
-          {/* Contact info */}
-          <Grid item xs={12} md={4}>
-            <Paper elevation={4} sx={{ 
-              p: 4, 
-              borderRadius: 2,
-              backgroundColor: theme.palette.background.paper,
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column'
-            }}>
-              <Typography variant="h5" component="h2" gutterBottom color="primary">
-                Get In Touch
-              </Typography>
-              <Typography variant="body1" paragraph color="text.secondary">
-                We're always happy to hear from you. Reach out to us using any of these channels:
-              </Typography>
-              
-              <Box sx={{ mt: 2, mb: 4 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                  <IconButton color="primary" sx={{ mr: 2, bgcolor: 'rgba(25, 118, 210, 0.1)' }}>
-                    <EmailIcon />
-                  </IconButton>
-                  <Box>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      Email Us
-                    </Typography>
-                    <Typography variant="body1" fontWeight="medium">
-                      support@shipmenttracker.com
-                    </Typography>
-                  </Box>
-                </Box>
-                
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                  <IconButton color="primary" sx={{ mr: 2, bgcolor: 'rgba(25, 118, 210, 0.1)' }}>
-                    <PhoneIcon />
-                  </IconButton>
-                  <Box>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      Call Us
-                    </Typography>
-                    <Typography variant="body1" fontWeight="medium">
-                      +1 (555) 123-4567
-                    </Typography>
-                  </Box>
-                </Box>
-                
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                  <IconButton color="primary" sx={{ mr: 2, bgcolor: 'rgba(25, 118, 210, 0.1)' }}>
-                    <SupportAgentIcon />
-                  </IconButton>
-                  <Box>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      Customer Support
-                    </Typography>
-                    <Typography variant="body1" fontWeight="medium">
-                      24/7 Live Support Available
-                    </Typography>
-                  </Box>
-                </Box>
-                
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 3 }}>
-                  <IconButton color="primary" sx={{ mr: 2, mt: 0.5, bgcolor: 'rgba(25, 118, 210, 0.1)' }}>
-                    <BusinessIcon />
-                  </IconButton>
-                  <Box>
-                    <Typography variant="subtitle2" color="text.secondary">
-                      Visit Our Office
-                    </Typography>
-                    <Typography variant="body1" fontWeight="medium">
-                      123 Shipping Lane<br />
-                      San Francisco, CA 94107<br />
-                      United States
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-              
-              <Box sx={{ mt: 'auto' }}>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image="/images/office-location.jpg"
-                  alt="Our Office"
-                  sx={{ borderRadius: 1, mb: 2 }}
+  return (
+    <Box sx={{ py: 4 }}>
+      <Container maxWidth="lg">
+        {/* Hero Section */}
+        <Fade in={true} timeout={800}>
+          <HeroSection>
+            <Grid container spacing={4} alignItems="center">
+              <Grid item xs={12} md={7}>
+                <Chip
+                  label="📬 Get in Touch"
+                  size="small"
+                  sx={{
+                    bgcolor: alpha(theme.palette.primary.main, 0.15),
+                    color: theme.palette.primary.main,
+                    fontWeight: 600,
+                    mb: 2,
+                    borderRadius: '20px',
+                  }}
                 />
-                <Typography variant="caption" color="text.secondary" textAlign="center" display="block">
-                  Our headquarters in San Francisco
+                <Typography
+                  variant="h3"
+                  component="h1"
+                  gutterBottom
+                  color="common.white"
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Let's Talk
                 </Typography>
+                <Typography
+                  variant="body1"
+                  color="grey.400"
+                  sx={{
+                    maxWidth: 500,
+                    fontSize: '1.1rem',
+                    lineHeight: 1.7,
+                  }}
+                >
+                  Have questions about your shipment or need assistance?
+                  Our team is here to help you every step of the way.
+                </Typography>
+                <Stack direction="row" spacing={1} sx={{ mt: 3, flexWrap: 'wrap', gap: 1 }}>
+                  <Chip
+                    label="⚡ Quick Response"
+                    sx={{
+                      bgcolor: alpha(theme.palette.common.white, 0.08),
+                      color: 'common.white',
+                      borderColor: alpha(theme.palette.common.white, 0.1),
+                    }}
+                    variant="outlined"
+                  />
+                  <Chip
+                    label="🎯 Expert Support"
+                    sx={{
+                      bgcolor: alpha(theme.palette.common.white, 0.08),
+                      color: 'common.white',
+                      borderColor: alpha(theme.palette.common.white, 0.1),
+                    }}
+                    variant="outlined"
+                  />
+                  <Chip
+                    label="🤝 24/7 Available"
+                    sx={{
+                      bgcolor: alpha(theme.palette.common.white, 0.08),
+                      color: 'common.white',
+                      borderColor: alpha(theme.palette.common.white, 0.1),
+                    }}
+                    variant="outlined"
+                  />
+                </Stack>
+              </Grid>
+              <Grid item xs={12} md={5} sx={{ display: { xs: 'none', md: 'block' } }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Avatar
+                    sx={{
+                      width: 120,
+                      height: 120,
+                      bgcolor: alpha(theme.palette.primary.main, 0.15),
+                      border: `2px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                    }}
+                  >
+                    <SupportAgentIcon sx={{ fontSize: 60, color: theme.palette.primary.main }} />
+                  </Avatar>
+                </Box>
+              </Grid>
+            </Grid>
+          </HeroSection>
+        </Fade>
+
+        <Grid container spacing={4}>
+          {/* Contact Form */}
+          <Grid item xs={12} md={7}>
+            <Slide direction="right" in={true} timeout={800}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: { xs: 3, sm: 4 },
+                  borderRadius: '20px',
+                  border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
+                  bgcolor: theme.palette.background.paper,
+                }}
+              >
+                <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
+                  Send Us a Message
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                  Fill out the form below and we'll get back to you as soon as possible.
+                </Typography>
+
+                <Divider sx={{ mb: 3 }} />
+
+                <form onSubmit={handleSubmit}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label="Your Name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        error={!!errors.name}
+                        helperText={errors.name}
+                        required
+                        variant="outlined"
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label="Email Address"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        error={!!errors.email}
+                        helperText={errors.email}
+                        required
+                        variant="outlined"
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label="Phone Number (Optional)"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        variant="outlined"
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        select
+                        fullWidth
+                        label="Reason for Contact"
+                        name="reason"
+                        value={formData.reason}
+                        onChange={handleChange}
+                        error={!!errors.reason}
+                        helperText={errors.reason}
+                        required
+                        variant="outlined"
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+                      >
+                        {contactReasons.map((reason) => (
+                          <MenuItem key={reason} value={reason}>
+                            {reason}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={5}
+                        label="Your Message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        error={!!errors.message}
+                        helperText={errors.message}
+                        required
+                        variant="outlined"
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        disabled={isSubmitting}
+                        endIcon={<SendIcon />}
+                        sx={{
+                          px: 4,
+                          py: 1.2,
+                          borderRadius: '12px',
+                          textTransform: 'none',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </form>
+              </Paper>
+            </Slide>
+          </Grid>
+
+          {/* Contact Info */}
+          <Grid item xs={12} md={5}>
+            <Slide direction="left" in={true} timeout={800}>
+              <Box>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: { xs: 3, sm: 4 },
+                    borderRadius: '20px',
+                    border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
+                    bgcolor: theme.palette.background.paper,
+                    mb: 3,
+                  }}
+                >
+                  <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
+                    Get In Touch
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                    We're always happy to hear from you. Reach out to us using any of these channels:
+                  </Typography>
+
+                  <Stack spacing={2}>
+                    {contactInfo.map((item, index) => (
+                      <Zoom in={true} timeout={500} style={{ transitionDelay: `${index * 100}ms` }} key={index}>
+                        <InfoCard elevation={0}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <Avatar
+                              sx={{
+                                bgcolor: alpha(theme.palette.primary.main, 0.1),
+                                color: theme.palette.primary.main,
+                                width: 44,
+                                height: 44,
+                              }}
+                            >
+                              {item.icon}
+                            </Avatar>
+                            <Box>
+                              <Typography variant="subtitle2" color="text.secondary">
+                                {item.title}
+                              </Typography>
+                              <Typography variant="body1" fontWeight="600">
+                                {item.detail}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                {item.subtitle}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </InfoCard>
+                      </Zoom>
+                    ))}
+                  </Stack>
+                </Paper>
+
+                {/* Office Hours */}
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 3,
+                    borderRadius: '20px',
+                    border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
+                    bgcolor: alpha(theme.palette.primary.main, 0.02),
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar sx={{ bgcolor: alpha(theme.palette.warning.main, 0.1), color: theme.palette.warning.main }}>
+                      <AccessTimeIcon />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Office Hours
+                      </Typography>
+                      <Typography variant="body2" fontWeight="500">
+                        Monday - Friday: 9:00 AM - 6:00 PM EST
+                      </Typography>
+                      <Typography variant="body2" fontWeight="500">
+                        Saturday - Sunday: Closed
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Paper>
+
+                {/* Location Image */}
+                <Box sx={{ mt: 3 }}>
+                  <CardMedia
+                    component="img"
+                    height="120"
+                    image="/images/office-location.jpg"
+                    alt="Our Office"
+                    sx={{
+                      borderRadius: '16px',
+                      objectFit: 'cover',
+                    }}
+                  />
+                  <Typography variant="caption" color="text.secondary" textAlign="center" display="block" sx={{ mt: 1 }}>
+                    📍 Our headquarters in Abcd
+                  </Typography>
+                </Box>
               </Box>
-            </Paper>
+            </Slide>
           </Grid>
         </Grid>
-      </Container>
-      
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert 
-          onClose={handleSnackbarClose} 
-          severity={snackbar.severity} 
-          variant="filled"
-          sx={{ width: '100%' }}
+
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={snackbar.severity}
+            variant="filled"
+            sx={{
+              width: '100%',
+              borderRadius: '12px',
+              '& .MuiAlert-icon': { alignItems: 'center' },
+            }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Container>
     </Box>
   );
 };
 
-export default ContactPage; 
+export default ContactPage;

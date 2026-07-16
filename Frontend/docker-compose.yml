@@ -7,7 +7,7 @@ services:
       args:
         - REACT_APP_API_URL=${REACT_APP_API_URL}
         - REACT_APP_MAPBOX_TOKEN=${REACT_APP_MAPBOX_TOKEN}
-    container_name: shipment-tracker-webapp
+    container_name: track-fleet-webapp
     restart: always
     ports:
       - "80:80"

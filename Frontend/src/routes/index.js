@@ -8,6 +8,9 @@ import CreateShipmentPage from '../pages/CreateShipmentPage';
 import AboutPage from '../pages/AboutPage';
 import ContactPage from '../pages/ContactPage';
 import NotFoundPage from '../pages/NotFoundPage';
+import ReportPage from '../pages/ReportPage';
+import PartnersPage from '../pages/PartnersPage';
+import FAQPage from '../pages/FAQPage';
 
 const AppRoutes = () => {
   return (
@@ -16,6 +19,9 @@ const AppRoutes = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="track" element={<Navigate to="/" replace />} />
+          <Route path="report" element={<ReportPage />} />
+          <Route path="partners" element={<PartnersPage />} />
+          <Route path="faq" element={<FAQPage />} />
           <Route path="tracking/:trackingNumber" element={<TrackingPage />} />
           <Route path="track/:trackingNumber" element={<Navigate to="/tracking/:trackingNumber" replace />} />
           <Route path="create" element={<CreateShipmentPage />} />

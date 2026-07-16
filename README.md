@@ -13,7 +13,7 @@ A comprehensive Node.js API for tracking cargo shipments with real-time location
 
 ## Assignment Fulfillment
 
-This project implements a complete Cargo Shipment Tracker backend using Node.js, Express, and MongoDB with all required features:
+This project implements a complete Track Fleet backend using Node.js, Express, and MongoDB with all required features:
 
 ### Backend Implementation
 - **CRUD Operations**: Complete RESTful API endpoints for shipment management
