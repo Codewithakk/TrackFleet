@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'; // Import useEffect
+import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import { useShipment } from '../context/ShipmentContext';
 import {
   Box,
@@ -95,10 +95,22 @@ const HomePage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
+  const location = useLocation(); // Hook to access URL query parameters
   const { error, clearShipment } = useShipment();
   const [trackingNumber, setTrackingNumber] = useState('');
   const [trackingError, setTrackingError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Effect to read tracking number from URL query parameter
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const trackingFromUrl = queryParams.get('tracking');
+    if (trackingFromUrl) {
+      setTrackingNumber(trackingFromUrl);
+      // Optionally, auto-submit the form if you want instant tracking
+      // handleSubmit(new Event('submit')); // Uncomment for auto-submit
+    }
+  }, [location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
